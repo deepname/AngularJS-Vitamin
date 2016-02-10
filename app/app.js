@@ -20,7 +20,8 @@
             'angularJS-Vitamin.auth',
             'angularJS-Vitamin.async',
             'angularJS-Vitamin.dashboard',
-            'angularJS-Vitamin.components'
+            'angularJS-Vitamin.components',
+            'angularJS-Vitamin.example'
         ])
         .config(appConfig)
         .run(appRun);

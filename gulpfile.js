@@ -9,23 +9,25 @@ var minifyCss = require('gulp-minify-css');
 var sass = require('gulp-sass');
 
 /*
- Gulp will run a server in the port 8080 with ./app folder on it
+ Gulp will run a server in the port 9090 with ./app folder on it
  */
-gulp.task('connect', function () {
+gulp.task('connect', function() {
     connect.server({
-        root: 'app',                    // Main app folder
-        port: 8080,                     // localhost:8080
-        livereload: true,               // Allow us to reload any time we want
-        fallback: 'app/index.html'      // if HTML5 enabled this is required
+        root: 'app', // Main app folder
+        port: 9090, // localhost:9090
+        livereload: true, // Allow us to reload any time we want
+        fallback: 'app/index.html' // if HTML5 enabled this is required
     });
 });
 
 /*
  Sass compiler (ruby and compass+sass are required)
  */
-gulp.task('sass', function () {
+gulp.task('sass', function() {
     gulp.src('./app/assets/sass/style.scss')
-        .pipe(sass({outputStyle: 'compressed'}))
+        .pipe(sass({
+            outputStyle: 'compressed'
+        }))
         .pipe(gulp.dest('./app/assets/css'))
         .pipe(connect.reload());
 });
@@ -34,12 +36,12 @@ gulp.task('sass', function () {
 /*
  In those two tasks we will reload HTML and JSON files when needed
  */
-gulp.task('html', function () {
+gulp.task('html', function() {
     gulp.src('./app/**/*.html')
         .pipe(connect.reload());
 });
 
-gulp.task('json', function () {
+gulp.task('json', function() {
     gulp.src('./app/**/*.json')
         .pipe(connect.reload());
 });
@@ -68,7 +70,7 @@ gulp.task('json', function () {
  With this url gulp will search in every folder inside features as long as he finds the controller.
 
  */
-gulp.task('js', function () {
+gulp.task('js', function() {
     return gulp.src([
             './app/utils.js',
             './app/app.js',
@@ -76,20 +78,20 @@ gulp.task('js', function () {
             './app/features/**/service.*.js',
             './app/features/**/controller.*.js'
         ])
-        .pipe(concat('app.js'))                     // Name of concat file
-        .pipe(gulp.dest('./app/assets/js/'))        // Folder to save the file
-        .pipe(connect.reload());                    // Force the reload to see the changes
+        .pipe(concat('app.js')) // Name of concat file
+        .pipe(gulp.dest('./app/assets/js/')) // Folder to save the file
+        .pipe(connect.reload()); // Force the reload to see the changes
 });
 
 
 /*
  To compress the app.js we will search it and then use the module uglify
  */
-gulp.task('js:compress', function () {
+gulp.task('js:compress', function() {
     return gulp.src(['./app/assets/js/app.js'])
         .pipe(concat('app.js'))
         .pipe(uglify({
-            mangle: false        // Feature to replace original function names with sort ones (not working for now)
+            mangle: false // Feature to replace original function names with sort ones (not working for now)
         }))
         .pipe(gulp.dest('./app/assets/js/'))
 });
@@ -97,7 +99,7 @@ gulp.task('js:compress', function () {
 /*
  All the watchers we need to reload our page as soon as we save the file
  */
-gulp.task('watch', function () {
+gulp.task('watch', function() {
     gulp.watch(['./app/**/*.html'], ['html']);
     gulp.watch(['./app/**/*.json'], ['json']);
     gulp.watch(['./app/**/*.js', '!./app/assets/**/*.js'], ['js']);
@@ -109,7 +111,7 @@ gulp.task('watch', function () {
  This two functions will compress the bower dependences. In those cases we need to specify the entire path of the files
  because we only want specific files. The order is important because is a hierarchy
  */
-gulp.task('vendors:css', function () {
+gulp.task('vendors:css', function() {
     return gulp.src([
             './bower_components/angular-loading-bar/build/loading-bar.min.css',
             './bower_components/bootstrap/dist/css/bootstrap.min.css'
@@ -119,7 +121,7 @@ gulp.task('vendors:css', function () {
         .pipe(gulp.dest('./app/assets/css/'));
 });
 
-gulp.task('vendors:js', function () {
+gulp.task('vendors:js', function() {
     return gulp.src([
             './bower_components/angular/angular.min.js',
             './bower_components/angular-ui-router/release/angular-ui-router.min.js',
