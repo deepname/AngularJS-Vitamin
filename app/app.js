@@ -21,7 +21,8 @@
             'angularJS-Vitamin.async',
             'angularJS-Vitamin.dashboard',
             'angularJS-Vitamin.components',
-            'angularJS-Vitamin.example'
+            'angularJS-Vitamin.example',
+            'angularJS-Vitamin.users'
         ])
         .config(appConfig)
         .run(appRun);

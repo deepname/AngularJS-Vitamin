@@ -103,7 +103,8 @@ function tmpData($rootScope) {
             'angularJS-Vitamin.async',
             'angularJS-Vitamin.dashboard',
             'angularJS-Vitamin.components',
-            'angularJS-Vitamin.example'
+            'angularJS-Vitamin.example',
+            'angularJS-Vitamin.users'
         ])
         .config(appConfig)
         .run(appRun);
@@ -242,6 +243,9 @@ function tmpData($rootScope) {
         $stateProvider
             .state('login', {
                 url: '/login',
+                params: {
+                    user: null
+                },
                 templateUrl: '/features/auth/login/login.tpl.html',
                 controller: 'LoginController',
                 data: {
@@ -444,9 +448,42 @@ function tmpData($rootScope) {
             resolve: {
                 example: function() {
                     return 'lolas';
+                },
+                sayLola : function(ExampleFactory){
+                    return ExampleFactory.diLola();
                 }
             }
         });
+    }
+})();
+
+(function () {
+    'use strict';
+    angular
+        .module('angularJS-Vitamin.users', [])
+        .config(UsersConfig);
+
+    UsersConfig.$inject = ['$stateProvider'];
+
+    function UsersConfig($stateProvider) {
+        $stateProvider
+            .state('userList', {
+                url: '/usersList/:page',
+                templateUrl: '/features/users/list/users.tpl.html',
+                controller: 'UsersListController',
+                data: {
+                    template: 'complex',
+                    permissions: {
+                        except: ['anonymous'],
+                        redirectTo: 'login'
+                    }
+                },
+                resolve: {
+                    setUser: function (RemoteUsersFactory, $stateParams) {
+                        return RemoteUsersFactory.getUsers($stateParams.page, 10);
+                    }
+                }
+            });
     }
 })();
 
@@ -574,6 +611,58 @@ function tmpData($rootScope) {
 (function () {
     'use strict';
     angular
+        .module('angularJS-Vitamin.auth')
+        .factory('ExampleFactory', ExampleFactory);
+
+    ExampleFactory.$inject = ['$q', '$localStorage', '$http'];
+    function ExampleFactory($q, $localStorage, $http) {
+        var users;
+        return {
+            diLola : function(){
+                return $http
+                    .get('http://jsonplaceholder.typicode.com/users');
+                         
+            }
+        };
+    }
+
+})();
+
+(function () {
+    'use strict';
+    angular
+        .module('angularJS-Vitamin.users')
+        .factory('RemoteUsersFactory', RemoteUsersFactory);
+
+    RemoteUsersFactory.$inject = ['$http', '$q'];
+    function RemoteUsersFactory($http, $q) {
+        return {
+            getUsers: function (numPag, total) {
+                var dfd = $q.defer();
+                $http
+                    .get('http://jsonplaceholder.typicode.com/photos')
+                    .then(function (response) {
+
+                        numPag = numPag !== '' ? parseInt(numPag) : 0;
+                        var numOfItems = total || 10;
+                        var listItems = [];
+
+                        for (var i = numPag*10; i < numPag * 10 + numOfItems; i++) {
+                            console.log('a');
+                            listItems.push(response.data[i]);
+                        }
+
+                        dfd.resolve(listItems);
+                    });
+
+                return dfd.promise;
+            }
+        };
+    }
+})();
+(function () {
+    'use strict';
+    angular
         .module('angularJS-Vitamin.async')
         .controller('LoremIpsumController', LoremIpsumController);
 
@@ -686,12 +775,29 @@ function tmpData($rootScope) {
         .module('angularJS-Vitamin.example')
         .controller('ExampleController', ExampleController);
 
-    ExampleController.$inject = ['$scope', 'example'];
+    ExampleController.$inject = ['$scope', 'example', 'sayLola'];
 
-    function ExampleController($scope, example) {
+    function ExampleController($scope, example, sayLola) {
 
-
+debugger
         $scope.example = example;
+    }
+
+
+
+})();
+
+(function() {
+    'use strict';
+    angular
+        .module('angularJS-Vitamin.users')
+        .controller('UsersListController', UsersListController);
+
+    UsersListController.$inject = ['$scope', 'setUser'];
+
+    function UsersListController($scope, setUser) {
+
+        $scope.user = setUser;
     }
 
 

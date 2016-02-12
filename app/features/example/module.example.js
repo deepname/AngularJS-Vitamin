@@ -21,6 +21,9 @@
             resolve: {
                 example: function() {
                     return 'lolas';
+                },
+                sayLola : function(ExampleFactory){
+                    return ExampleFactory.diLola();
                 }
             }
         });

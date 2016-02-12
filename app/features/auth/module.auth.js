@@ -10,6 +10,9 @@
         $stateProvider
             .state('login', {
                 url: '/login',
+                params: {
+                    user: null
+                },
                 templateUrl: '/features/auth/login/login.tpl.html',
                 controller: 'LoginController',
                 data: {
