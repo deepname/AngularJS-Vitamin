@@ -96,6 +96,7 @@ function tmpData($rootScope) {
             'jm.i18next',
             'tmh.dynamicLocale',
             'ui.bootstrap',
+            'ngTable',
 
             /*
              Then all our app modules
