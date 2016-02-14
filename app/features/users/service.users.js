@@ -12,23 +12,16 @@
                 $http
                     .get('http://jsonplaceholder.typicode.com/users')
                     .then(function (response) {
-
-                        numPag = numPag !== '' ? parseInt(numPag) : 0;
-                        var numOfItems = total || 10;
                         var listItems = {
                             users : [],
-                            numPage:0,
-                            numOfItems: 0
+                            numPag: numPag !== '' ? parseInt(numPag) : 0,
+                            numOfItems: total || 10
                         };
-
-                        for (var i = numPag*10; i < numPag * 10 + numOfItems; i++) {
+                        for (var i = listItems.numPag*10; i < listItems.numPag * 10 + listItems.numOfItems; i++) {
                             listItems.users.push(response.data[i]);
                         }
-                        listItems.numPage = numPag;
-                        listItems.numOfItems = numOfItems;
                         dfd.resolve(listItems);
                     });
-
                 return dfd.promise;
             }
         };

@@ -133,7 +133,6 @@ gulp.task('vendors:js', function() {
             './bower_components/angular-dynamic-locale/dist/tmhDynamicLocale.min.js',
             './bower_components/i18next/i18next.min.js',
             './bower_components/ng-i18next/dist/ng-i18next.min.js',
-            './bower_components/angular-deckgrid/angular-deckgrid.js',
             './bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
 
             './lib/ui-bootstrap/ui-bootstrap-custom-tpls-0.14.3.min.js'

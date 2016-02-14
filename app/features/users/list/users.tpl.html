@@ -1,17 +1,28 @@
 <!--<pre>{{user | json}}</pre>-->
-<div class="container-fluid">
+<div id="users" class="container-fluid">
     <div class="row">
-        <div class="col-xs-12">
-            <div deckgrid class="deckgrid" source="user">
-                <div class="a-card">
-                    <h2>{{card.name}}</h2>
-                    <h3>{{card.username}}</h3>
-                    <h4>{{card.email}}</h4>
+        <div class="col-lg-offset-1 col-xs-10">
+            <div id="wrapper">
+                <div id="columns">
+                    <div class="pin" ng-repeat="(key, user) in users">
+                        <h3>{{user.name}}</h3>
+                        <h4>{{user.email}}</h4>
+                        <p>
+                            {{user.address}}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <pagination total-items="user.length" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true" rotate="false"></pagination>
+        <div class="col-lg-6">
+            <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="numOfItems" class="pagination-sm" boundary-link-numbers="true" rotate="false"></pagination>
+        </div>
+        <div class="col-lg-6">
+            {{bigCurrentPage}}<br/>
+            {{numOfItems}}<br/>
+            {{bigTotalItems}}
+        </div>
     </div>
 </div>
