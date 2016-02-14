@@ -1,1 +1,17 @@
-<pre>{{user | json}}</pre>
+<!--<pre>{{user | json}}</pre>-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div deckgrid class="deckgrid" source="user">
+                <div class="a-card">
+                    <h2>{{card.name}}</h2>
+                    <h3>{{card.username}}</h3>
+                    <h4>{{card.email}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <pagination total-items="user.length" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true" rotate="false"></pagination>
+    </div>
+</div>

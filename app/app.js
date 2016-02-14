@@ -13,6 +13,8 @@
             'ngSanitize',
             'jm.i18next',
             'tmh.dynamicLocale',
+            'ui.bootstrap',
+            'akoenig.deckgrid',
 
             /*
              Then all our app modules
