@@ -1,0 +1,14 @@
+<!--<pre>{{user | json}}</pre>-->
+<div id="post" class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <table ng-table="tableParams" class="table" show-filter="true">
+                <tr ng-repeat="post in posts">
+                    <td title="'title'" filter="{ title: 'text'}" sortable="'title'">
+                        {{post.title}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

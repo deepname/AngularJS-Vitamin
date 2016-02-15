@@ -24,7 +24,8 @@
             'angularJS-Vitamin.dashboard',
             'angularJS-Vitamin.components',
             'angularJS-Vitamin.example',
-            'angularJS-Vitamin.users'
+            'angularJS-Vitamin.users',
+            'angularJS-Vitamin.posts'
         ])
         .config(appConfig)
         .run(appRun);

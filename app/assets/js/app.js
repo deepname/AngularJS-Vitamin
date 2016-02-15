@@ -106,7 +106,8 @@ function tmpData($rootScope) {
             'angularJS-Vitamin.dashboard',
             'angularJS-Vitamin.components',
             'angularJS-Vitamin.example',
-            'angularJS-Vitamin.users'
+            'angularJS-Vitamin.users',
+            'angularJS-Vitamin.posts'
         ])
         .config(appConfig)
         .run(appRun);
@@ -462,6 +463,36 @@ function tmpData($rootScope) {
 (function () {
     'use strict';
     angular
+        .module('angularJS-Vitamin.posts', [])
+        .config(PostsConfig);
+
+    PostsConfig.$inject = ['$stateProvider'];
+
+    function PostsConfig($stateProvider) {
+        $stateProvider
+            .state('postsList', {
+                url: '/postsList/:page',
+                templateUrl: '/features/posts/list/posts.tpl.html',
+                controller: 'PostsListController',
+                data: {
+                    template: 'complex',
+                    permissions: {
+                        except: ['anonymous'],
+                        redirectTo: 'login'
+                    }
+                },
+                resolve: {
+                    setPost: function (RemotePostsFactory, $stateParams) {
+                        return RemotePostsFactory.getPost($stateParams.page, 10);
+                    }
+                }
+            });
+    }
+})();
+
+(function () {
+    'use strict';
+    angular
         .module('angularJS-Vitamin.users', [])
         .config(UsersConfig);
 
@@ -539,7 +570,7 @@ function tmpData($rootScope) {
                 var dfd = $q.defer();
 
                 //$http
-                //    .post(buildURL('login'), credentials)
+                //    .posts(buildURL('login'), credentials)
                 //    .then(function (response) {
                 //        if(!response.data.error){
                 //            $localStorage.User = response.data.user;
@@ -581,7 +612,7 @@ function tmpData($rootScope) {
                 var dfd = $q.defer();
 
                 //$http
-                //    .post(buildURL('login'), credentials)
+                //    .posts(buildURL('login'), credentials)
                 //    .then(function (response) {
                 //        if(!response.data.error){
                 //            dfd.resolve(response.data.user);
@@ -630,6 +661,35 @@ function tmpData($rootScope) {
 
 })();
 
+(function () {
+    'use strict';
+    angular
+        .module('angularJS-Vitamin.posts')
+        .factory('RemotePostsFactory', RemotePostsFactory);
+
+    RemotePostsFactory.$inject = ['$http', '$q'];
+    function RemotePostsFactory($http, $q) {
+        return {
+            getPost: function (numPag, total) {
+                var dfd = $q.defer();
+                $http
+                    .get('http://jsonplaceholder.typicode.com/posts')
+                    .then(function (response) {
+                        var listItems = {
+                            posts : [],
+                            numPag: numPag !== '' ? parseInt(numPag) : 0,
+                            numOfItems: total || 10
+                        };
+                        for (var i = listItems.numPag*10; i < listItems.numPag * 10 + listItems.numOfItems; i++) {
+                            listItems.posts.push(response.data[i]);
+                        }
+                        dfd.resolve(listItems);
+                    });
+                return dfd.promise;
+            }
+        };
+    }
+})();
 (function () {
     'use strict';
     angular
@@ -784,6 +844,24 @@ debugger
 
 
 
+})();
+
+(function() {
+    'use strict';
+    angular
+        .module('angularJS-Vitamin.posts')
+        .controller('PostsListController', PostsListController);
+
+    PostsListController.$inject = ['$scope', 'setPost'];
+
+    function PostsListController($scope, setPost) {
+        $scope.posts = setPost.posts;
+        $scope.bigCurrentPage = setPost.numPag;
+        $scope.numOfItems = setPost.numOfItems;
+        $scope.bigTotalItems = setPost.posts.length;
+        debugger;
+        $scope.tableParams = new NgTableParams({}, { dataset: $scope.posts });
+    }
 })();
 
 (function() {

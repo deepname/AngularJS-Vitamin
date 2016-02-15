@@ -20,7 +20,7 @@
                 var dfd = $q.defer();
 
                 //$http
-                //    .post(buildURL('login'), credentials)
+                //    .posts(buildURL('login'), credentials)
                 //    .then(function (response) {
                 //        if(!response.data.error){
                 //            $localStorage.User = response.data.user;
@@ -62,7 +62,7 @@
                 var dfd = $q.defer();
 
                 //$http
-                //    .post(buildURL('login'), credentials)
+                //    .posts(buildURL('login'), credentials)
                 //    .then(function (response) {
                 //        if(!response.data.error){
                 //            dfd.resolve(response.data.user);
